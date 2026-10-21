@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Supermercado sostenible en el Instituto</title>
+<style>
+:root{--bg:#f1f8ee;--card:#fff;--tx:#1f3a22;--mu:#5b705e;--pr:#2e8b3d;--pr2:#e8f5e4;--ok:#2e8b3d;--ko:#c0392b;--ac:#f4a62a;--bd:#cfe3c9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14201a;--card:#1d2e24;--tx:#e6f2e4;--mu:#9bb5a0;--pr:#5cc16c;--pr2:#243b2b;--bd:#35523d}}
+:root[data-theme="dark"]{--bg:#14201a;--card:#1d2e24;--tx:#e6f2e4;--mu:#9bb5a0;--pr:#5cc16c;--pr2:#243b2b;--bd:#35523d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;font-size:18px;line-height:1.45}
+main{max-width:720px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:20px;padding:20px;margin:12px 0}
+h1{font-size:1.7rem;margin:.2em 0}h2{font-size:1.3rem;margin:.2em 0}
+.big{font-size:3.2rem;line-height:1}
+.mu{color:var(--mu);font-size:.9rem}
+button{font:inherit;font-weight:700;border:0;border-radius:14px;padding:12px 20px;background:var(--pr);color:#fff;cursor:pointer;margin:6px 6px 0 0}
+button.sec{background:var(--pr2);color:var(--tx);border:2px solid var(--bd)}
+input,select{font:inherit;padding:10px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);width:100%}
+input.dig{width:76px;text-align:center;font-size:1.5rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.row label{font-size:.85rem;font-weight:700;color:var(--mu);display:block;text-align:center}
+.bar{height:14px;background:var(--pr2);border-radius:9px;overflow:hidden;border:1px solid var(--bd)}
+.bar>i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.tip{background:var(--pr2);border-left:6px solid var(--ac);padding:10px 14px;border-radius:10px;margin:12px 0;font-size:.95rem}
+.fb{padding:12px;border-radius:12px;margin-top:12px;font-weight:700}
+.fb.ok{background:#d9f2dc;color:#1c5a27}.fb.ko{background:#fbe0dc;color:#8e2a1d}
+table{width:100%;border-collapse:collapse;font-size:.92rem}td,th{border-bottom:1px solid var(--bd);padding:7px 4px;text-align:left;vertical-align:top}
+.lv{font-weight:800;padding:2px 10px;border-radius:99px;background:var(--pr2);white-space:nowrap}
+.q{font-size:1.15rem;margin:.4em 0 1em}
+.grade{font-size:3.4rem;font-weight:900;color:var(--pr)}
+textarea{width:100%;height:150px;font:14px monospace;border-radius:12px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);padding:8px}
+@media print{button,.noprint{display:none!important}body{background:#fff;color:#000}.card{border-color:#999}}
+</style></head><body><main id="app"></main>
+<script>
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const $=id=>document.getElementById(id);
+const PHASES=[
+ {t:"Fase 1 · El Inventario",e:"📦",d:"Traemos envases reciclados y les damos un código de hasta 6 cifras. ¡Hay que saber leerlos, descomponerlos y ordenarlos!",tip:"Sistema de numeración decimal: U (1), D (10), C (100), UM (1 000), DM (10 000) y CM (100 000). Ejemplo: 243 507 = 2 CM + 4 DM + 3 UM + 5 C + 0 D + 7 U. Escribe los números sin puntos ni espacios."},
+ {t:"Fase 2 · Estantes y Estimaciones",e:"🧮",d:"Hay que calcular cuántos productos quedan en el stock y hacer cuentas rápidas redondeando.",tip:"Para redondear mira la cifra de la derecha del orden elegido: si es 5 o más, sube; si es 4 o menos, se queda. Centena: mira la D. Millar: mira la C."},
+ {t:"Fase 3 · El Día de la Compra",e:"🛒",d:"Gestionas las compras del supermercado del instituto con un presupuesto fijo. Calcula gastos y dinero restante.",tip:"Respeta la jerarquía de operaciones: primero multiplicaciones, después sumas y restas. Al final resta del presupuesto."}
+];
+const CRIT=[
+ {n:"Comprende la estructura decimal y valor posicional",ins:"Rúbrica de inventario",niv:["Aún no identifica U, D, C y UM","Identifica algunas cifras con ayuda","Identifica correctamente U, D, C y UM","Identifica, compone y ordena con total seguridad"]},
+ {n:"Aplica estrategias de cálculo mental y estimación",ins:"Diario de aprendizaje / Tarea final",niv:["Necesita apoyo para redondear","Redondea con algunos errores","Redondea cantidades con precisión","Redondea y estima con rapidez y precisión"]},
+ {n:"Resuelve problemas cotidianos con operaciones elementales",ins:"Observación directa en la simulación",niv:["No plantea la operación adecuada","Plantea la operación con ayuda","Plantea la operación para calcular total o cambio","Resuelve problemas combinados sin errores"]}
+];
+const LV=["Iniciado","En proceso","Logrado","Excelente"];
+const nums=s=>(s.match(/\d+/g)||[]).map(Number);
+const rd=(n,b)=>Math.round(n/b)*b;
+const F=n=>n.toLocaleString("es-ES");
+const dg=n=>String(n).padStart(6,"0").split("").map(Number);
+function num6(){let d=[R(1,9),R(0,9),R(0,9),R(0,9),R(0,9),R(0,9)];if(Math.random()<.4){d[R(1,5)]=0}return +d.join("")}
+function build(){
+ const qs=[];
+ const dec=n=>({ph:0,c:0,txt:`Un lote de productos tiene el código <b>${F(n)}</b>. Descompónlo en cifras: CM, DM, UM, C, D y U.`,f:[["CM"],["DM"],["UM"],["C"],["D"],["U"]],
+  ok:v=>v.map(Number).join()==dg(n).join(),
+  sol:`${F(n)} = ${dg(n).map((x,k)=>x+" "+["CM","DM","UM","C","D","U"][k]).join(" + ")}`,hint:"Empieza por la izquierda: la primera cifra son las centenas de millar (CM). Si no hay cifra, pon 0."});
+ qs.push(dec(num6()));qs.push(dec(num6()));
+ const a=[R(1,9),R(1,9),R(1,9),R(1,9),R(1,9)],an=+a.join("");
+ qs.push({ph:0,c:0,txt:`El stock de una bodega se escribe <b>${a[0]} DM + ${a[1]} UM + ${a[2]} C + ${a[3]} D + ${a[4]} U</b>. ¿Qué número es? (sin puntos ni espacios)`,f:[["Número"]],ok:v=>+v[0]===an,sol:String(an),hint:"DM son decenas de millar y UM unidades de millar: colócalas de izquierda a derecha."});
+ const cs=new Set();while(cs.size<4)cs.add(R(10000,999999));const cl=[...cs],srt=[...cl].sort((x,y)=>x-y);
+ qs.push({ph:0,c:0,txt:`Ordena estas existencias de <b>menor a mayor</b>: <b>${cl.map(F).join(" · ")}</b>`,f:[["Escríbelos separados por espacios, sin puntos","t"]],ok:v=>nums(v[0]).join()==srt.join(),sol:srt.map(F).join(" < "),hint:"Primero mira cuántas cifras tiene cada número; si empatan, compara cifra a cifra desde la izquierda."});
+ const n1=R(10000,99999),n2=R(100000,999999);
+ qs.push({ph:1,c:1,txt:`Redondea <b>${F(n1)}</b> a la <b>centena</b> más cercana.`,f:[["Centena"]],ok:v=>+v[0]===rd(n1,100),sol:F(rd(n1,100)),hint:`Mira la cifra de las decenas (${Math.floor(n1/10)%10}): ${Math.floor(n1/10)%10>=5?"sube":"se queda"}.`});
+ qs.push({ph:1,c:1,txt:`Redondea <b>${F(n2)}</b> a la <b>unidad de millar</b> más cercana.`,f:[["Millar"]],ok:v=>+v[0]===rd(n2,1000),sol:F(rd(n2,1000)),hint:`Mira la cifra de las centenas (${Math.floor(n2/100)%10}): ${Math.floor(n2/100)%10>=5?"sube":"se queda"}.`});
+ const S0=R(2000,9000),N=R(500,1800),C=R(3,9),k=R(12,48),r=S0-N+C*k;
+ qs.push({ph:1,c:2,txt:`En el almacén hay <b>${F(S0)}</b> botes de legumbres. Se venden <b>${F(N)}</b> y llegan <b>${C}</b> cajas de <b>${k}</b> botes. ¿Cuántos botes hay ahora?`,f:[["Botes"]],ok:v=>+v[0]===r,sol:`${S0} − ${N} + ${C}×${k} = ${r}`,hint:"Primero la multiplicación (botes que llegan), después resta y suma."});
+ const e=[R(210,990),R(210,990),R(210,990)],es=e.reduce((x,y)=>x+rd(y,100),0);
+ qs.push({ph:1,c:1,txt:`Cálculo rápido: tres pedidos cuestan <b>${e[0]} €</b>, <b>${e[1]} €</b> y <b>${e[2]} €</b>. Redondea cada precio a la centena y suma.`,f:[["Total aproximado (€)"]],ok:v=>+v[0]===es,sol:e.map(x=>rd(x,100)).join(" + ")+" = "+es,hint:"Redondea cada número por separado y luego suma."});
+ const A=R(12,35),P=R(12,48);
+ qs.push({ph:2,c:2,txt:`El instituto compra <b>${A}</b> cajas de material reciclado a <b>${P} €</b> cada una. ¿Cuánto paga?`,f:[["Euros"]],ok:v=>+v[0]===A*P,sol:`${A} × ${P} = ${A*P}`,hint:"Cantidad × precio. Descompón un factor si te ayuda (por ejemplo 24 = 20 + 4)."});
+ const a1=R(6,15),b1=R(12,30),a2=R(4,12),b2=R(25,60),T=a1*b1+a2*b2;
+ qs.push({ph:2,c:2,txt:`Pedido: <b>${a1}</b> cestas de fruta eco a <b>${b1} €</b> y <b>${a2}</b> lotes de cereales a <b>${b2} €</b>. ¿Total del pedido?`,f:[["Total (€)"]],ok:v=>+v[0]===T,sol:`${a1}×${b1} + ${a2}×${b2} = ${a1*b1} + ${a2*b2} = ${T}`,hint:"Jerarquía de operaciones: primero cada multiplicación y luego la suma."});
+ const G=R(600,1400);
+ qs.push({ph:2,c:2,txt:`El presupuesto de la cooperativa escolar es de <b>1500 €</b> y se han gastado <b>${F(G)} €</b>. ¿Cuánto dinero queda?`,f:[["Queda (€)"]],ok:v=>+v[0]===1500-G,sol:`1500 − ${G} = ${1500-G}`,hint:"Presupuesto menos gasto."});
+ const x=R(101,199),y=R(101,199),z=R(101,199),est=rd(x,10)+rd(y,10)+rd(z,10);
+ qs.push({ph:2,c:1,txt:`Sin papel: ¿llega un presupuesto de <b>400 €</b> para tres pedidos de <b>${x} €</b>, <b>${y} €</b> y <b>${z} €</b>? Redondea a decenas.`,f:[["Respuesta","s"]],ok:v=>v[0]===(est<=400?"si":"no"),sol:`${rd(x,10)}+${rd(y,10)}+${rd(z,10)} = ${est} → ${est<=400?"Sí llega":"No llega"}`,hint:"Suma los precios redondeados y compáralos con 400."});
+ return qs;
+}
+let S={};
+const app=$("app");
+function start(){app.innerHTML=`<div class="card" style="text-align:center"><div class="big">🥕🛒♻️</div><h1>Supermercado sostenible en el Instituto</h1><p class="mu">Matemáticas · 1.º ESO · Los números naturales</p></div>
+<div class="card"><h2>¿Quién eres?</h2><p>Escribe tu nombre y tu grupo para empezar el reto.</p><p><input id="nom" placeholder="Nombre y apellidos"></p><p><input id="grp" placeholder="Curso y grupo (ej. 1.º ESO B)"></p>
+<div class="tip">🎯 <b>Tu reto:</b> ayudar a montar el supermercado ecológico del instituto. Hay 3 fases y 12 preguntas. ¡Tienes dos intentos en cada una!</div><button id="go">¡Empezar!</button></div>`;
+ $("go").onclick=()=>{const n=$("nom").value.trim();if(!n){$("nom").focus();return}
+  S={nom:n,grp:$("grp").value.trim(),qs:build(),i:0,pts:[],att:0};intro()}}
+function intro(){const p=PHASES[S.qs[S.i].ph];
+ app.innerHTML=`<div class="card" style="text-align:center"><div class="big">${p.e}</div><h1>${p.t}</h1><p>${p.d}</p><div class="tip">💡 ${p.tip}</div><button id="nx">Vamos allá</button></div>`;$("nx").onclick=ask}
+function ask(){const q=S.qs[S.i];S.att=0;
+ const fields=q.f.map((f,k)=>{const t=f[1];
+  if(t==="s")return `<div><label>${f[0]}</label><select id="f${k}"><option value="">Elige…</option><option value="si">Sí, llega</option><option value="no">No llega</option></select></div>`;
+  if(t==="t")return `<div style="flex:1;min-width:200px"><label>${f[0]}</label><input id="f${k}" inputmode="numeric"></div>`;
+  return `<div><label>${f[0]}</label><input id="f${k}" class="dig" inputmode="numeric"></div>`}).join("");
+ app.innerHTML=`<div class="card"><div class="bar"><i style="width:${S.i/12*100}%"></i></div><p class="mu">${PHASES[q.ph].e} ${PHASES[q.ph].t} · Pregunta ${S.i+1} de 12</p><p class="q">${q.txt}</p><div class="row">${fields}</div><div id="fb"></div><button id="ck">Comprobar ✔</button><button class="sec" id="hn">💡 Pista</button></div>`;
+ $("ck").onclick=check;$("hn").onclick=()=>{$("fb").innerHTML=`<div class="tip">💡 ${q.hint}</div>`}}
+function check(){const q=S.qs[S.i];const v=q.f.map((_,k)=>$("f"+k).value.trim());if(v.some(x=>x==="")){$("fb").innerHTML=`<div class="fb ko">Rellena todas las casillas 😉</div>`;return}
+ const ok=q.ok(v);S.att++;
+ if(ok){S.pts[S.i]=S.att===1?1:.5;done(`<div class="fb ok">🎉 ¡Correcto!${S.att>1?" (a la segunda)":""}</div>`)}
+ else if(S.att<2){$("fb").innerHTML=`<div class="fb ko">Casi… ¡prueba otra vez!</div><div class="tip">💡 ${q.hint}</div>`}
+ else{S.pts[S.i]=0;done(`<div class="fb ko">No pasa nada. La solución era: ${q.sol}</div>`)}}
+function done(msg){const last=S.i===11;$("fb").innerHTML=msg;$("ck").style.display="none";$("hn").style.display="none";
+ const b=document.createElement("button");b.textContent=last?"Ver mi informe 📋":"Siguiente ➜";b.onclick=()=>{S.i++;if(S.i>11)report();else if(S.qs[S.i].ph!==S.qs[S.i-1].ph)intro();else ask()};$("fb").after(b);b.focus()}
+function report(){
+ const tot=S.pts.reduce((a,b)=>a+b,0),nota=Math.round(tot/12*100)/10;
+ const cs=[0,1,2].map(c=>{const idx=S.qs.map((q,i)=>q.c===c?i:-1).filter(i=>i>=0);const p=idx.reduce((a,i)=>a+S.pts[i],0)/idx.length;const l=p>=.9?3:p>=.7?2:p>=.5?1:0;return {c,p,l}});
+ const emoji=nota>=9?"🏆":nota>=7?"🌟":nota>=5?"👍":"💪";
+ const hoy=new Date().toLocaleDateString("es-ES");
+ const txt=`INFORME · Supermercado sostenible en el Instituto\nAlumno/a: ${S.nom}${S.grp?" ("+S.grp+")":""}\nFecha: ${hoy}\nNOTA: ${nota.toFixed(1).replace(".",",")} / 10\n\n`+cs.map(x=>`- ${CRIT[x.c].n}: ${LV[x.l]} (${Math.round(x.p*100)}%)`).join("\n")+"\n\nPreguntas: "+S.pts.map((p,i)=>`${i+1}${p===1?"✔":p===.5?"½":"✘"}`).join(" ");
+ app.innerHTML=`<div class="card" style="text-align:center"><div class="big">${emoji}</div><h1>¡Reto terminado, ${S.nom.split(" ")[0]}!</h1><div class="grade">${nota.toFixed(1).replace(".",",")} / 10</div><p class="mu">${S.nom}${S.grp?" · "+S.grp:""} · ${hoy}</p></div>
+<div class="card"><h2>Criterios de evaluación</h2><table><tr><th>Criterio</th><th>Nivel</th></tr>${cs.map(x=>`<tr><td><b>${CRIT[x.c].n}</b><br><span class="mu">${CRIT[x.c].ins}<br>${CRIT[x.c].niv[x.l]}</span></td><td><span class="lv">${LV[x.l]}</span><br><span class="mu">${Math.round(x.p*100)}%</span></td></tr>`).join("")}</table></div>
+<div class="card"><h2>Tus respuestas</h2><table>${S.qs.map((q,i)=>`<tr><td>${i+1}</td><td>${PHASES[q.ph].e}</td><td>${S.pts[i]===1?"✅ A la primera":S.pts[i]===.5?"🟡 A la segunda":"❌ "+q.sol}</td></tr>`).join("")}</table></div>
+<div class="card noprint"><h2>📤 Entrega en Classroom</h2><p class="mu">Guarda la página como PDF y adjúntalo a la tarea.</p><button class="sec" onclick="print()">🖨️ Guardar como PDF</button><button class="sec" onclick="start()">🔁 Repetir</button></div>`;
+}
+start();
+</script></body></html>

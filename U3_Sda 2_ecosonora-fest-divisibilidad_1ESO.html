@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EcoSonora Fest · Logística sin desperdicio · Divisibilidad 1.º ESO</title>
+<style>
+:root{--g:#14532d;--g2:#dff1e5;--y:#f5b82e;--t:#17261d;--l:#bcd8c6;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.55 "Trebuchet MS",Verdana,sans-serif;color:var(--t);background:linear-gradient(180deg,#e4f1e8 0,#eef7f1 360px)}
+.w{max-width:900px;margin:0 auto;padding:0 16px 48px}
+header{background:linear-gradient(125deg,#104426,#1c7040);color:#fff;padding:36px 16px 44px;position:relative;text-align:center;box-shadow:0 4px 18px #123d2520}
+header:after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:18px;background:radial-gradient(circle at 9px 0,#eef7f1 8px,transparent 9px) 0 0/24px 18px repeat-x}
+h1{margin:0 0 6px;font:800 2.1rem/1.15 Georgia,serif;letter-spacing:-.5px}
+header p{margin:0 auto;max-width:620px;opacity:.92}
+.card{background:#fff;border:1px solid var(--l);border-radius:16px;padding:20px;margin:18px 0;box-shadow:0 5px 18px #173b2410}
+.msg{border-left:6px solid var(--y);background:#fffbea}
+h2{font:700 1.4rem Georgia,serif;margin:0 0 10px;color:var(--g)}
+h3{font:700 1.1rem Georgia,serif;margin:0 0 6px}
+label{font-weight:700;display:block;margin-bottom:4px}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>div{flex:1 1 220px}
+input[type=text],input[type=number],select,textarea{width:100%;font:inherit;padding:9px 10px;border:2px solid var(--l);border-radius:8px;background:#fff;color:var(--t)}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid var(--y);outline-offset:1px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0}
+.tabs button{flex:1 1 150px;padding:10px;border:2px solid var(--g);background:#fff;color:var(--g);border-radius:10px;font:700 .95rem "Trebuchet MS",Verdana,sans-serif;cursor:pointer}
+.tabs button.on{background:var(--g);color:#fff}
+.tabs button.done:not(.on){background:var(--g2);border-color:#6a9b78}
+.progress-wrap{background:#dcebe0;border-radius:999px;height:12px;overflow:hidden;margin:10px 0 5px}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#21834b,#7bbd68);border-radius:999px;transition:width .25s}
+.progress-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.9rem;color:#45614d}
+.instructions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.instruction{background:#f2f8f3;border:1px solid #d5e6d9;border-radius:12px;padding:10px;font-size:.9rem}
+.instruction b{display:block;color:var(--g);font-size:1rem}
+.answer-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.attempt{font-size:.82rem;color:#586c5e;font-weight:700}
+@media(max-width:600px){.instructions{grid-template-columns:1fr}.card{padding:15px}.tabs button{flex-basis:100%}}
+.fase{display:none}.fase.on{display:block}
+.p{border-top:2px dashed var(--l);padding-top:14px;margin-top:14px}
+.p:first-of-type{border:0;margin-top:0;padding-top:0}
+.fl{margin:10px 0}
+.fl label{font-weight:600}
+.ck{display:inline-flex;gap:6px;align-items:center;margin-right:16px;font-weight:600}
+.fl input[type=number]{max-width:160px}
+.m{display:block;margin-top:4px;font-weight:800}.m.ok{color:#14803c}.m.no{color:#b3261e}.m.info{color:#795500}
+button.b{background:var(--y);color:#2b2100;border:0;border-radius:10px;padding:11px 20px;font:800 1rem "Trebuchet MS",Verdana,sans-serif;cursor:pointer}
+button.b2{background:#fff;color:var(--g);border:2px solid var(--g);border-radius:10px;padding:8px 16px;font:700 .95rem "Trebuchet MS",Verdana,sans-serif;cursor:pointer}
+.sc{font-weight:700;margin-left:8px}
+.err{color:#b3261e;font-weight:700}
+button:disabled,input:disabled,select:disabled{opacity:.55;cursor:not-allowed}
+textarea.cod{font:13px monospace;min-height:70px}
+#rep{display:none;background:#fff;border:2px solid var(--g);border-radius:14px;padding:22px;margin-top:20px}
+#rep.show{display:block}
+#rep table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:.95rem}
+#rep td,#rep th{border:1px solid #9bb8a6;padding:6px 8px;text-align:left;vertical-align:top}
+#rep th{background:var(--g2)}
+.nota{font:800 2rem Georgia,serif;color:var(--g)}
+.sol{background:#fffbea;border-left:5px solid var(--y);padding:8px 12px;margin:6px 0 12px;font-size:.95rem}
+@media print{
+ @page{size:auto;margin:14mm}
+ body{background:#fff;font-size:11pt}
+ body>*:not(.w),.w>*:not(#rep){display:none!important}
+ #rep{display:block!important;border:0;padding:0;margin:0}
+ .np{display:none!important}
+ #rep table{break-inside:avoid}
+ #rep h2,#rep h3{break-after:avoid}
+ #rep p{orphans:3;widows:3}
+}
+@media(max-width:520px){h1{font-size:1.6rem}#rep{padding:12px}#rep table{font-size:.82rem}#rep td,#rep th{padding:4px}}
+</style>
+</head>
+<body>
+<header>
+<h1>EcoSonora Fest: logística sin desperdicio</h1>
+<p>Situación de aprendizaje de Matemáticas · 1.º ESO · Divisibilidad</p>
+</header>
+<div class="w">
+<div class="card msg">
+<h2>Mensaje urgente de Marta, la coordinadora</h2>
+<p>Hola, equipo. Faltan 5 días para el EcoSonora Fest, el primer festival de música 100 % sostenible de la ciudad, y me han operado de urgencia: no podré ir. Os dejo mi cuaderno de logística con lo que falta: pulseras, almacén, tienda, autobuses eléctricos, voluntariado y limpieza. <b>No puede sobrar ni faltar nada</b>: cada desperdicio nos aleja del sello «Festival Verde». ¿Aceptáis ser el Ecoequipo de logística?</p>
+</div>
+<div class="card">
+<div class="row">
+<div><label for="nom">Nombre y apellidos</label><input type="text" id="nom" autocomplete="name"></div>
+<div><label for="gr">Curso y grupo</label><input type="text" id="gr" placeholder="1.º ESO B"></div>
+</div>
+</div>
+<div class="card" aria-label="Instrucciones de la actividad">
+<h2>Tu misión como Ecoequipo</h2>
+<p>Resuelve los seis retos de logística aplicando criterios de divisibilidad, máximo común divisor y mínimo común múltiplo. Comprueba cada apartado antes de continuar.</p>
+<div class="instructions">
+<div class="instruction"><b>1. Piensa</b>Lee el reto y prepara tu estrategia.</div>
+<div class="instruction"><b>2. Responde</b>Cada apartado dispone de dos intentos.</div>
+<div class="instruction"><b>3. Comprueba</b>El informe se habilita cuando todos los apartados se hayan comprobado.</div>
+</div>
+<div class="progress-meta"><span id="progressText">0 de 13 apartados comprobados</span><span id="progressPct">0 %</span></div>
+<div class="progress-wrap" role="progressbar" aria-label="Progreso de la actividad" aria-valuemin="0" aria-valuemax="13" aria-valuenow="0" id="progressTrack"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+<div class="tabs" id="tabs" aria-label="Fases de la actividad"></div>
+<div class="card" id="fases"></div>
+<div class="card">
+<h2>Guardar y continuar más tarde</h2>
+<p>Pulsa «Generar código», copia el texto y guárdalo. Para seguir, pégalo en el cuadro y pulsa «Cargar progreso». El código conserva las respuestas y los intentos utilizados, de modo que no se reinicia el límite de dos intentos.</p>
+<textarea class="cod" id="cod" aria-label="Código de progreso" placeholder="Aquí aparece o se pega el código"></textarea>
+<p><button class="b2" id="bg" type="button">Generar código</button> <button class="b2" id="bc" type="button">Copiar</button> <button class="b2" id="bl" type="button">Cargar progreso</button> <span id="cm" aria-live="polite"></span></p>
+</div>
+<div class="card">
+<h2>Entregar</h2>
+<p>Elige el tipo de informe. El informe con soluciones está pensado para uso docente. Ten en cuenta que, al tratarse de un archivo HTML que funciona en el navegador, el código de acceso no constituye una protección segura frente a quien inspeccione el archivo.</p>
+<div class="fl">
+<label class="ck"><input type="radio" name="tp" value="sin" checked>Informe con mis resultados, sin soluciones</label>
+<label class="ck"><input type="radio" name="tp" value="con">Informe con soluciones</label>
+</div>
+<div class="fl" id="cw" style="display:none"><label for="rv">Código «revelar»</label><input type="text" id="rv" autocomplete="off" style="max-width:240px"></div>
+<p id="lk" class="err"></p>
+<p><button class="b" id="gen" type="button" disabled>Calcular nota y preparar PDF</button> <span class="err" id="ge"></span></p>
+<p class="np"><small>El informe se abrirá en la ventana de impresión del navegador. Selecciona «Guardar como PDF» para descargarlo en formato PDF.</small></p>
+</div>
+<div id="rep" aria-live="polite"></div>
+</div>
+<script>
+const F=["Abren las puertas","Reparto sin desperdicio","El reloj del festival","Operación Festival"];
+const P=[
+{id:1,f:0,t:"Las cajas de vasos",q:"En el almacén hay <b>252 vasos reutilizables</b> que se guardarán en cajas con el mismo número de vasos cada una, sin que sobre ninguno. Los cajones admiten cajas de 6, 9, 10 y 12 vasos. Justifica sin hacer divisiones largas.",fl:[{k:"a",l:"a) ¿Con qué tamaños de caja el reparto es exacto?",type:"multi",o:["6","9","10","12"],a:["6","9","12"]},{k:"b",l:"b) ¿Cuántas cajas salen si usan las de 12 vasos?",type:"num",a:21}],s:"252 es par y la suma de sus cifras es 9: es divisible por 2, 3 y 9, y por tanto por 6. Las dos últimas cifras (52) son múltiplo de 4 y 252 es múltiplo de 3, así que es divisible por 12. No acaba en 0, luego no es divisible por 10. Como 252 es múltiplo de 12, 12 es divisor de 252, y 252 : 12 = 21 cajas."},
+{id:2,f:0,t:"El abono premiado",q:"El número ganador del sorteo tiene tres cifras y se ha mojado: <b>7□5</b>. Solo se sabe que es múltiplo de 9. Lucía dice que también es múltiplo de 15 y Marcos que es múltiplo de 10.",fl:[{k:"a",l:"a) ¿Qué cifra falta?",type:"num",a:6},{k:"b",l:"b) ¿Quién tiene razón?",type:"sel",o:["Lucía","Marcos","Los dos","Ninguno"],a:"Lucía"}],s:"7 + □ + 5 = 12 + □ debe ser múltiplo de 9; el único valor posible es 18, así que □ = 6 y el número es 765 (9 · 85). Es múltiplo de 3 (suma 18) y de 5 (acaba en 5), luego lo es de 15: Lucía tiene razón. No acaba en 0, así que no es múltiplo de 10."},
+{id:3,f:1,t:"Los lotes de la tienda",q:"La tienda ecológica tiene <b>72 camisetas</b> de algodón orgánico, <b>108 bolsas</b> de tela y <b>180 pulseras</b> de cuerda reciclada. Quieren preparar el mayor número posible de lotes idénticos, sin que sobre nada.",fl:[{k:"a",l:"a) ¿Cuántos lotes se preparan?",type:"num",a:36},{k:"b",l:"b) Camisetas por lote",type:"num",a:2},{k:"c",l:"c) Bolsas por lote",type:"num",a:3},{k:"d",l:"d) Pulseras por lote",type:"num",a:5}],s:"Se busca el m.c.d.(72, 108, 180). 72 = 2³·3², 108 = 2²·3³, 180 = 2²·3²·5. Factores comunes con el menor exponente: 2²·3² = 36 lotes. Cada lote lleva 72:36 = 2 camisetas, 108:36 = 3 bolsas y 180:36 = 5 pulseras."},
+{id:4,f:2,t:"Los autobuses eléctricos",q:"Tres líneas llevan al público al recinto: la A sale cada <b>12 min</b>, la B cada <b>15 min</b> y la C cada <b>20 min</b>. A las 17:00 salen las tres a la vez.",fl:[{k:"a",l:"a) ¿A qué hora vuelven a salir juntas?",type:"sel",o:["17:30","18:00","18:30","19:00"],a:"18:00"},{k:"b",l:"b) Hasta las 22:00 (incluida), ¿cuántas veces más coinciden?",type:"num",a:5}],s:"m.c.m.(12, 15, 20): 12 = 2²·3, 15 = 3·5, 20 = 2²·5, así que 2²·3·5 = 60 minutos. Vuelven a coincidir a las 18:00 y después a las 19:00, 20:00, 21:00 y 22:00: 5 veces más."},
+{id:5,f:3,t:"Equipos de voluntariado",q:"Hay <b>48 ecovoluntarios</b> (montaje y reciclaje) y <b>60 voluntarios de acogida</b>. Se forman equipos iguales entre sí (mismo número de cada tipo) sin que sobre nadie. Cada equipo debe tener <b>entre 15 y 20 personas</b> en total.",fl:[{k:"a",l:"a) ¿Cuántos equipos se forman?",type:"num",a:6},{k:"b",l:"b) Ecovoluntarios por equipo",type:"num",a:8},{k:"c",l:"c) Voluntarios de acogida por equipo",type:"num",a:10}],s:"El número de equipos debe dividir a 48 y a 60: son los divisores de 12 (1, 2, 3, 4, 6 y 12). Con 108 personas en total, los tamaños serían 108, 54, 36, 27, 18 y 9. Solo 18 está entre 15 y 20, así que son 6 equipos de 8 ecovoluntarios y 10 de acogida."},
+{id:6,f:3,t:"Equipos de limpieza en colisión",q:"Dos equipos limpian los baños ecológicos y empiezan a las 12:00. Si coinciden en el único camino de servicio, se forma un atasco. <b>Plan 1:</b> A cada 30 min y B cada 45 min. <b>Plan 2:</b> A cada 40 min y B cada 50 min. Cuenta las coincidencias entre las 12:00 (excluida) y las 24:00 (incluida).",fl:[{k:"a",l:"a) Coincidencias con el Plan 1",type:"num",a:8},{k:"b",l:"b) Coincidencias con el Plan 2",type:"num",a:3},{k:"c",l:"c) ¿Qué plan evita más atascos?",type:"sel",o:["Plan 1","Plan 2"],a:"Plan 2"}],s:"Plan 1: m.c.m.(30, 45) = 90 min, así que coinciden cada 1 h 30 min: 8 veces (13:30, 15:00, 16:30, 18:00, 19:30, 21:00, 22:30 y 24:00). Plan 2: m.c.m.(40, 50) = 200 min (3 h 20 min): 15:20, 18:40 y 22:00, o sea 3 veces. El Plan 2 evita más atascos, aunque las visitas son menos frecuentes y hay que vigilar la higiene."}
+];
+const S={v:{},attempts:{},checked:{}};
+const $=s=>document.querySelector(s);
+const esc=t=>String(t==null?"":t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function build(){
+ $("#tabs").innerHTML=F.map((f,i)=>`<button type="button" data-f="${i}">Fase ${i+1}: ${f}</button>`).join("");
+ $("#fases").innerHTML=F.map((f,i)=>`<section class="fase" id="f${i}"><h2>Fase ${i+1}: ${f}</h2>`+P.filter(p=>p.f==i).map(p=>`<article class="p"><h3>Problema ${p.id}: ${p.t}</h3><p>${p.q}</p>`+p.fl.map(x=>{const k=p.id+x.k;let c;
+  if(x.type=="multi")c=x.o.map(o=>`<label class="ck"><input type="checkbox" aria-label="${esc(x.l)}: ${o}" data-k="${k}" value="${o}">${o}</label>`).join("");
+  else if(x.type=="sel")c=`<select aria-label="${esc(x.l)}" data-k="${k}"><option value="">Elige…</option>${x.o.map(o=>`<option>${o}</option>`).join("")}</select>`;
+  else c=`<input type="number" min="0" step="1" inputmode="numeric" aria-label="${esc(x.l)}" data-k="${k}">`;
+  return `<div class="fl"><label>${x.l}</label>${c}<div class="answer-tools"><span class="attempt" id="a${k}">Intentos: 0/2</span></div><span class="m" id="m${k}" aria-live="polite"></span></div>`}).join("")+
+  `<div class="fl"><label for="j${p.id}">Explica cómo lo has pensado</label><textarea id="j${p.id}" rows="2" data-k="${p.id}j"></textarea></div><p class="progress-meta">Al comprobar, se revisarán todos los apartados que tengan respuesta. Cada apartado consume como máximo un intento por comprobación.</p><button type="button" class="b2" data-c="${p.id}">Comprobar apartados</button><span class="sc" id="s${p.id}" aria-live="polite"></span></article>`).join("")+`</section>`).join("");
+ go(0);apply();
+}
+function go(i){document.querySelectorAll(".fase").forEach((e,j)=>e.classList.toggle("on",i==j));document.querySelectorAll("#tabs button").forEach((e,j)=>e.classList.toggle("on",i==j))}
+function key(p,x){return p.id+x.k}
+function valueEmpty(v){return Array.isArray(v)?v.length===0:(v===undefined||v==="")}
+function sameAnswer(a,b){
+ if(Array.isArray(a)&&Array.isArray(b))return a.length===b.length&&a.every(v=>b.includes(v));
+ return String(a??"")===String(b??"");
+}
+function ok(p,x){
+ const k=key(p,x),v=S.v[k];
+ if(!(S.attempts[k]>0)||!Object.prototype.hasOwnProperty.call(S.checked,k)||!sameAnswer(v,S.checked[k]))return false;
+ if(x.type=="multi")return Array.isArray(v)&&v.length==x.a.length&&x.a.every(a=>v.includes(a));
+ if(x.type=="sel")return v==x.a;
+ return v!==undefined&&v!==""&&Number(v)==x.a;
+}
+function locked(k){return (S.attempts[k]||0)>=2||S.v[k+"__correct"]===true}
+function sc(p){return p.fl.filter(x=>ok(p,x)).length}
+function chk(id){
+ const p=P.find(q=>q.id==id);
+ p.fl.forEach(x=>{
+  const k=key(p,x),m=$("#m"+k),v=S.v[k];
+  if(locked(k)){showMark(p,x);return}
+  if(valueEmpty(v)){m.textContent="Escribe o selecciona una respuesta antes de comprobar.";m.className="m info";return}
+  S.attempts[k]=(S.attempts[k]||0)+1;
+  S.checked[k]=Array.isArray(v)?[...v]:v;
+  if(ok(p,x)){S.v[k+"__correct"]=true;m.textContent="✔ ¡Correcto! Has resuelto este apartado.";m.className="m ok"}
+  else if(S.attempts[k]>=2){m.textContent="✖ Has agotado los dos intentos. La respuesta correcta es: "+corr(x)+".";m.className="m no"}
+  else{m.textContent="✖ No es correcto. Revisa tu estrategia: te queda un intento.";m.className="m no"}
+  updateAttempt(k);disableField(k);
+ });
+ $("#s"+id).textContent=sc(p)+" de "+p.fl.length+" correctos";
+ upd();
+}
+function corr(x){return Array.isArray(x.a)?x.a.join(", "):x.a}
+function updateAttempt(k){const el=$("#a"+k);if(el)el.textContent="Intentos: "+(S.attempts[k]||0)+"/2"}
+function showMark(p,x){
+ const k=key(p,x),m=$("#m"+k);
+ updateAttempt(k);
+ if(ok(p,x)){m.textContent="✔ Apartado correcto. Ya no puedes modificarlo.";m.className="m ok"}
+ else if((S.attempts[k]||0)>=2){m.textContent="✖ Intentos agotados. Respuesta correcta: "+corr(x)+".";m.className="m no"}
+ else if((S.attempts[k]||0)===1){m.textContent="Primer intento incorrecto. Puedes modificar la respuesta y volver a comprobar.";m.className="m info"}
+ disableField(k);
+}
+function disableField(k){document.querySelectorAll(`[data-k="${k}"]`).forEach(e=>{if(e.type!=="textarea")e.disabled=locked(k)})}
+function ans(p,x){const v=S.v[key(p,x)];return Array.isArray(v)?v.join(", "):v}
+function nota(){return P.reduce((s,p)=>s+sc(p),0)/totalParts*10}
+const totalParts=P.reduce((n,p)=>n+p.fl.length,0);
+function isCurrentChecked(p,x){const k=key(p,x);return (S.attempts[k]||0)>0&&Object.prototype.hasOwnProperty.call(S.checked,k)&&sameAnswer(S.v[k],S.checked[k])}
+function checkedCount(){return P.reduce((n,p)=>n+p.fl.filter(x=>isCurrentChecked(p,x)).length,0)}
+function pend(){return P.reduce((n,p)=>n+p.fl.filter(x=>valueEmpty(S.v[key(p,x)])||!isCurrentChecked(p,x)).length,0)}
+function upd(){
+ const n=pend(),done=checkedCount(),pct=Math.round(done/totalParts*100);
+ $("#gen").disabled=n>0;
+ $("#progressText").textContent=done+" de "+totalParts+" apartados comprobados";
+ $("#progressPct").textContent=pct+" %";
+ $("#progressBar").style.width=pct+"%";
+ $("#progressTrack").setAttribute("aria-valuenow",done);
+ F.forEach((f,i)=>{const btn=$(`#tabs button[data-f="${i}"]`),phase=P.filter(p=>p.f===i),all=phase.every(p=>p.fl.every(x=>(S.attempts[key(p,x)]||0)>0));btn.classList.toggle("done",all)});
+ const l=$("#lk");l.textContent=n?"Te faltan "+n+" apartados por responder y comprobar.":"¡Misión completada! Ya puedes preparar el informe PDF.";l.className=n?"err":"sc";
+}
+function invalidateReport(){const r=$("#rep");r.classList.remove("show");r.innerHTML=""}
+function gen(){
+ if(pend()){upd();return}
+ const con=document.querySelector('input[name=tp]:checked').value=="con";
+ if(con&&$("#rv").value.trim().toLowerCase()!="revelar"){$("#ge").textContent="El código no es correcto. Pídeselo a tu docente.";return}
+ $("#ge").textContent="";
+ const n=nota().toFixed(1).replace(".",","),d=new Date().toLocaleDateString("es-ES");
+ let h=`<h2>Informe de EcoSonora Fest: divisibilidad</h2><p><b>Alumno/a:</b> ${esc($("#nom").value)||"(sin nombre)"} · <b>Grupo:</b> ${esc($("#gr").value)||"(sin indicar)"} · <b>Fecha:</b> ${d}</p><p>Nota automática: <span class="nota">${n}</span> / 10 · Informe ${con?"con":"sin"} soluciones</p><p><b>Resultado:</b> ${P.reduce((a,p)=>a+sc(p),0)} de ${totalParts} apartados correctos. Los ${totalParts} apartados tienen el mismo peso en la nota automática. Las explicaciones escritas se incluyen para su revisión por el docente y no forman parte de esa nota.</p>`;
+ P.forEach(p=>{h+=`<h3>Problema ${p.id}: ${p.t} (${sc(p)}/${p.fl.length})</h3><table><tr><th>Apartado</th><th>Tu respuesta</th>${con?"<th>Solución</th>":""}<th>Resultado</th><th>Intentos</th></tr>`+p.fl.map(x=>{const k=key(p,x);return `<tr><td>${x.l}</td><td>${esc(ans(p,x))||"—"}</td>${con?`<td>${esc(corr(x))}</td>`:""}<td>${ok(p,x)?"Correcto":"Incorrecto"}</td><td>${S.attempts[k]||0}/2</td></tr>`}).join("")+`</table>`;
+  const j=S.v[p.id+"j"];if(j)h+=`<p><i>Tu explicación:</i> ${esc(j)}</p>`;
+  if(con)h+=`<div class="sol"><b>Resolución:</b> ${p.s}</div>`});
+ h+=`<p class="np"><button class="b" type="button" id="pr">Guardar informe como PDF</button></p><p class="np"><small>En el cuadro de impresión, selecciona «Guardar como PDF» como destino.</small></p>`;
+ const r=$("#rep");r.innerHTML=h;r.classList.add("show");r.scrollIntoView({behavior:"smooth"});
+ $("#pr").onclick=()=>window.print();
+}
+function apply(){
+ document.querySelectorAll("[data-k]").forEach(e=>{
+  const k=e.dataset.k,v=S.v[k];
+  if(e.type=="checkbox")e.checked=Array.isArray(v)&&v.includes(e.value);
+  else e.value=v==null?"":v;
+  if(e.type!=="textarea")e.disabled=locked(k);
+ });
+ P.forEach(p=>{p.fl.forEach(x=>showMark(p,x));$("#s"+p.id).textContent=sc(p)+" de "+p.fl.length+" apartados correctos"});
+ upd();
+}
+document.addEventListener("input",e=>{
+ const k=e.target.dataset&&e.target.dataset.k;if(!k)return;
+ if(e.target.type==="textarea"){S.v[k]=e.target.value;invalidateReport();return}
+ if(locked(k))return;
+ S.v[k]=e.target.type=="checkbox"?[...document.querySelectorAll(`input[data-k="${k}"]:checked`)].map(c=>c.value):e.target.value;
+ const p=P.find(z=>z.fl.some(x=>key(z,x)===k)),x=p&&p.fl.find(z=>key(p,z)===k);
+ if(x&&!locked(k)){const m=$("#m"+k);m.textContent=S.attempts[k]?"Respuesta modificada. Debes volver a comprobarla para utilizar el siguiente intento.":"Respuesta pendiente de comprobación.";m.className="m info"}
+ invalidateReport();upd();
+});
+document.addEventListener("click",e=>{
+ const t=e.target;
+ if(t.dataset.f!==undefined)go(+t.dataset.f);
+ if(t.dataset.c)chk(+t.dataset.c);
+});
+document.querySelectorAll('input[name=tp]').forEach(r=>r.onchange=()=>{$("#cw").style.display=r.value=="con"&&r.checked?"block":"none";$("#ge").textContent="";invalidateReport()});
+$("#gen").onclick=gen;
+$("#bg").onclick=()=>{
+ try{$("#cod").value=btoa(unescape(encodeURIComponent(JSON.stringify({n:$("#nom").value,g:$("#gr").value,v:S.v,attempts:S.attempts,checked:S.checked}))));$("#cm").textContent="Código generado."}
+ catch(x){$("#cm").textContent="No se pudo generar."}
+};
+$("#bc").onclick=async()=>{
+ const c=$("#cod");if(!c.value.trim()){$("#cm").textContent="Primero genera un código.";return}
+ try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(c.value);$("#cm").textContent="Copiado."}
+ else{c.focus();c.select();$("#cm").textContent="Selecciona el texto y cópialo manualmente."}}
+ catch(x){c.focus();c.select();$("#cm").textContent="No se pudo copiar automáticamente. Copia el texto seleccionado."}
+};
+$("#bl").onclick=()=>{
+ try{
+  const o=JSON.parse(decodeURIComponent(escape(atob($("#cod").value.trim()))));
+  if(!o||typeof o!=="object"||!o.v||typeof o.v!=="object"||Array.isArray(o.v))throw new Error("Formato no válido");
+  const valid={};P.forEach(p=>p.fl.forEach(x=>{const k=key(p,x),v=o.v[k];if(x.type==="multi"){if(Array.isArray(v))valid[k]=v.filter(z=>x.o.includes(String(z))).map(String)}else if(v!==undefined&&v!==null)valid[k]=String(v)}));
+  P.forEach(p=>{const j=o.v[p.id+"j"];if(typeof j==="string")valid[p.id+"j"]=j});
+  const attempts={},checked={};
+  P.forEach(p=>p.fl.forEach(x=>{
+   const k=key(p,x),a=Number(o.attempts&&o.attempts[k]);
+   attempts[k]=Number.isInteger(a)?Math.max(0,Math.min(2,a)):0;
+   const saved=o.checked&&o.checked[k];
+   if(attempts[k]>0&&saved!==undefined){
+    if(x.type==="multi"&&Array.isArray(saved))checked[k]=saved.filter(z=>x.o.includes(String(z))).map(String);
+    else if(x.type!=="multi"&&saved!==null)checked[k]=String(saved);
+   }
+   if(o.v[k+"__correct"]===true&&attempts[k]>0&&checked[k]!==undefined&&sameAnswer(valid[k],checked[k])&&okWith(valid,p,x))valid[k+"__correct"]=true;
+  }));
+  S.v=valid;S.attempts=attempts;S.checked=checked;$("#nom").value=typeof o.n==="string"?o.n:"";$("#gr").value=typeof o.g==="string"?o.g:"";
+  apply();invalidateReport();$("#cm").textContent="Progreso cargado.";
+ }catch(x){$("#cm").textContent="El código no es válido o está dañado."}
+};
+function okWith(v,p,x){const a=v[key(p,x)];if(x.type==="multi")return Array.isArray(a)&&a.length===x.a.length&&x.a.every(z=>a.includes(z));if(x.type==="sel")return a===x.a;return a!==undefined&&a!==""&&Number(a)===x.a}
+["#nom","#gr"].forEach(sel=>$(sel).addEventListener("input",invalidateReport));
+build();
+</script>
+</body>
+</html>
